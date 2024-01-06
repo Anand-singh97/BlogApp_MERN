@@ -11,25 +11,24 @@ export const PostDetails = () => {
   const { id } = useParams();
   const { currentUser } = useContext(UserContext);
 
-  const getPostData = async () => {
-    try {
-      const response = await fetch(
-        `https://localhost:8000/posts/details/${id}`,
-        {
-          credentials: "include",
-        }
-      );
-      if (response.ok) {
-        const obj = await response.json();
-        const { result } = obj;
-        setPostData(result);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
+    const getPostData = async () => {
+      try {
+        const response = await fetch(
+          `https://localhost:8000/posts/details/${id}`,
+          {
+            credentials: "include",
+          }
+        );
+        if (response.ok) {
+          const obj = await response.json();
+          const { result } = obj;
+          setPostData(result);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
     getPostData();
   }, [id]);
 

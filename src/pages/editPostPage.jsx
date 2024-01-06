@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Audio } from "react-loader-spinner";
+
 export const EditPost = () => {
   const { id } = useParams();
   const [postData, setPostData] = useState(null);
@@ -61,28 +62,6 @@ export const EditPost = () => {
     setImageFile(files);
   };
 
-  const getPostData = async () => {
-    try {
-      const response = await fetch(
-        `https://localhost:8000/posts/details/${id}`,
-        {
-          credentials: "include",
-        }
-      );
-      if (response.ok) {
-        const obj = await response.json();
-        const { result } = obj;
-        setPostData(result);
-        const { title, summary, content } = result;
-        setTitle(title);
-        setSummary(summary);
-        setContent(content);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const updatePost = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -107,6 +86,27 @@ export const EditPost = () => {
     }
   };
   useEffect(() => {
+    const getPostData = async () => {
+      try {
+        const response = await fetch(
+          `https://localhost:8000/posts/details/${id}`,
+          {
+            credentials: "include",
+          }
+        );
+        if (response.ok) {
+          const obj = await response.json();
+          const { result } = obj;
+          setPostData(result);
+          const { title, summary, content } = result;
+          setTitle(title);
+          setSummary(summary);
+          setContent(content);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
     getPostData();
   }, [id]);
 

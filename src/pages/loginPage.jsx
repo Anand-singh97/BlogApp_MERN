@@ -4,7 +4,6 @@ import { useState, useContext } from "react";
 import blurBg from "../images/blurBg.jpg";
 import blogging from "../images/blogging.png";
 import { UserContext } from "../contexts/user.context";
-import { set } from "mongoose";
 
 export const LoginPage = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
