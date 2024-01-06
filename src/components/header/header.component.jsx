@@ -40,7 +40,7 @@ export const Header = () => {
       }
     };
     checkAuth();
-  }, []);
+  }, [navigate]);
 
   return (
     <div>
