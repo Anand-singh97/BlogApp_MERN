@@ -7,7 +7,7 @@ const express = require('express');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config({ path: './.env' });
 require('./passportConfig');
 
 const userRoutes = require('./routes/user/userLoginRegister.router');
