@@ -8,7 +8,7 @@ export const IndexPage = () => {
   useEffect(() => {
     const getAllPosts = async () => {
       try {
-        const response = await fetch( `${backendHost}/posts/post`, {
+        const response = await fetch( `https://blogappbackend-cmom.onrender.com/posts/post`, {
           method: "GET",
           credentials: "include",
         });

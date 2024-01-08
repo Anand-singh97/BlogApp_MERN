@@ -33,7 +33,6 @@ cloudinary.v2.config({
 });
 app.use(cookieParser());
 app.use(cors({
-    origin: 'https://delicate-bonbon-ae2c0f.netlify.app',
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
