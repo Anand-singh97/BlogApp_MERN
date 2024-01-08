@@ -2,7 +2,7 @@ const fs = require('fs');
 const cloudinary = require('cloudinary');
 const cors = require('cors');
 const path = require('path');
-const https = require('https');
+const http = require('http');
 const helmet = require('helmet');
 const express = require('express');
 const passport = require('passport');
@@ -33,6 +33,7 @@ cloudinary.v2.config({
 });
 app.use(cookieParser());
 app.use(cors({
+    origin:'*',
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -49,7 +50,7 @@ mongoose.connection.once('open', () => {
 mongoose.connection.on('error', (error) => {
     console.error(error);
 });
-const server = https.createServer(app);
+const server = http.createServer(app);
 
 async function startServer() {
     await mongoose.connect(config.MONGO_URL);
