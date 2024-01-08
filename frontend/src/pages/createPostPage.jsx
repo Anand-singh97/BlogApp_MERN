@@ -77,7 +77,6 @@ const createNewPost = async(e)=>{
   {
     navigate('/');
   }
-  console.log(response);
 }
   return (
     <div>

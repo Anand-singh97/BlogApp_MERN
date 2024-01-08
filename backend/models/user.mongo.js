@@ -33,7 +33,10 @@ const postsSchema = new mongoose.Schema({
     title:String,
     summary:String,
     content:String,
-    imageLocation:String,
+    imageLocation:{
+        id:{type:String},
+        url:{type:String}
+    },
     author:{type:Schema.Types.ObjectId, refPath:'authorType'},
     authorType:{type:String, enum:['registered_accounts', 'google_oauth_accounts']}
 }, {timestamps:true});

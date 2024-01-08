@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useContext } from "react";
 import { UserContext } from "../contexts/user.context";
@@ -10,8 +10,15 @@ export const PostDetails = () => {
   const [postData, setPostData] = useState(null);
   const { id } = useParams();
   const { currentUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!currentUser || !currentUser.userId) {
+      alert('Session Ended');
+      navigate('/login');
+      return;
+    }
+
     const getPostData = async () => {
       try {
         const response = await fetch(
@@ -29,29 +36,13 @@ export const PostDetails = () => {
         console.error(error);
       }
     };
+
     getPostData();
-  }, [id]);
+  }, [id, currentUser, navigate]);
 
   if (!postData) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <Audio
-          height="80"
-          width="80"
-          radius="9"
-          color="green"
-          ariaLabel="loading"
-          wrapperStyle
-          wrapperClass
-        />
-      </div>
-    );
-  }
-
-  if (!currentUser || !currentUser.userId) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        ;
         <Audio
           height="80"
           width="80"
@@ -97,7 +88,7 @@ export const PostDetails = () => {
               style={{ height: "300px", overflow: "hidden" }}
             >
               <img
-                src={`https://localhost:8000/${imageLocation}`}
+                src={imageLocation.url}
                 alt="blog images"
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />

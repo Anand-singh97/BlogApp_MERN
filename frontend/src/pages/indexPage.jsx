@@ -41,6 +41,7 @@ export const IndexPage = () => {
   }
   let isImageOnLeft = true;
   return (
+    
     <div className="bg-gray-100 flex flex-col items-center py-5 mx-2 mt-2 rounded-lg gap-5">
       {allPosts.map(
         ({ author, title, summary, createdAt, imageLocation, _id }) => {

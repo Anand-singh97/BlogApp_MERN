@@ -103,7 +103,7 @@ async function addBlogPost(
       title: title,
       summary: summary,
       content: content,
-      imageLocation: imageLocation,
+      imageLocation: {id:imageLocation.public_id, url:imageLocation.secure_url},
       author: authorId,
       authorType: authorType,
     });

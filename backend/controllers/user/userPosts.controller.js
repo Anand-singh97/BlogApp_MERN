@@ -1,3 +1,4 @@
+const getDataUri = require("../../dataUri");
 const {
   addBlogPost,
   getAllPosts,
@@ -5,16 +6,16 @@ const {
   updateUserPost,
 } = require("../../models/dataOperations");
 const fs = require("fs");
+const cloudinary = require('cloudinary');
+
 async function createPost(req, res) {
   try {
-    const { originalname, path } = req.file;
     const { title, summary, content } = req.body;
     const { userId, authorType } = req;
-    const parts = originalname.split(".");
-    const ext = parts[parts.length - 1];
-    const newPath = path + "." + ext;
-    fs.renameSync(path, newPath);
-
+    const file = req.file; 
+    const fileUri = getDataUri(file);
+    const myCloud = await cloudinary.v2.uploader.upload(fileUri.content);
+    const newPath = { public_id: myCloud.public_id, secure_url: myCloud.secure_url };
     const response = await addBlogPost(
       title,
       summary,

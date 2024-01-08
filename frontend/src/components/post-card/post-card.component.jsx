@@ -19,15 +19,15 @@ export const PostCard = (props) => {
       md:gap-[10rem] lg:gap-[10rem] mx-[3rem] w-fit"
     >
       <div
-        className={`w-[17rem] md:w-[30rem] lg:w-[40rem]  ${
+        className={`w-[17rem] md:w-[30rem] lg:w-[50rem]  ${
           isImageOnLeft ? "" : "md:order-2"
         }`}
       >
-        <img
-          src={"https://localhost:8000/" + imageLocation}
+      <img
+          src={imageLocation.url}
           alt="blog images"
-          className="max-w-full max-h-full"
-        />
+          className="max-w-full max-h-full"/>
+        
       </div>
       <div
         className={`text-center md:text-left ${
