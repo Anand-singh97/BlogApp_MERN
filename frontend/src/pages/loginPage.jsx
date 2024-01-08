@@ -15,7 +15,7 @@ export const LoginPage = () => {
   const backendHost = process.env.BACKEND_HOST;
 
   const openGoogleSignIn = () => {
-    window.open(`${backendHost}/auth/google`, "_self");
+    window.open(`https://blogappbackend-cmom.onrender.com/auth/google`, "_self");
   };
   const makePasswordVisible = () => {
     setPasswordVisibility(!passwordVisibility);
@@ -57,7 +57,7 @@ export const LoginPage = () => {
       e.preventDefault(); // prevent default form submission
   
       if (validationForm()) {
-        const response = await fetch(`${backendHost}/user/login`, {
+        const response = await fetch(`https://blogappbackend-cmom.onrender.com/user/login`, {
           method: "POST",
           body: JSON.stringify({ username: username, password: password }),
           headers: { "Content-Type": "application/json" },

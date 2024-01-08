@@ -33,11 +33,11 @@ cloudinary.v2.config({
 });
 app.use(cookieParser());
 app.use(cors({
-    origin:'*',
+    origin:'http://localhost:3000',
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  }));
+}));
 
 app.use(passport.initialize());
 app.use('/user', userRoutes);
