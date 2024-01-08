@@ -4,11 +4,11 @@ import { Audio } from "react-loader-spinner";
 
 export const IndexPage = () => {
   const [allPosts, setAllPosts] = useState([]);
-
+  const backendHost = process.env.BACKEND_HOST;
   useEffect(() => {
     const getAllPosts = async () => {
       try {
-        const response = await fetch("https://localhost:8000/posts/post", {
+        const response = await fetch( `${backendHost}/posts/post`, {
           method: "GET",
           credentials: "include",
         });

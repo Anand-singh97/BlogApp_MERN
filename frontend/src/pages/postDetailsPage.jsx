@@ -7,6 +7,7 @@ import { formatISO9075 } from "date-fns";
 import { Audio } from "react-loader-spinner";
 
 export const PostDetails = () => {
+  const backendHost = process.env.BACKEND_HOST;
   const [postData, setPostData] = useState(null);
   const { id } = useParams();
   const { currentUser } = useContext(UserContext);
@@ -22,7 +23,7 @@ export const PostDetails = () => {
     const getPostData = async () => {
       try {
         const response = await fetch(
-          `https://localhost:8000/posts/details/${id}`,
+          `${backendHost}/posts/details/${id}`,
           {
             credentials: "include",
           }

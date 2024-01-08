@@ -12,9 +12,10 @@ export const LoginPage = () => {
   const [errors, setErrors] = useState({});
   const { setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate(); // Hook for navigation
+  const backendHost = process.env.BACKEND_HOST;
 
   const openGoogleSignIn = () => {
-    window.open("https://localhost:8000/auth/google", "_self");
+    window.open(`${backendHost}/auth/google`, "_self");
   };
   const makePasswordVisible = () => {
     setPasswordVisibility(!passwordVisibility);
@@ -56,7 +57,7 @@ export const LoginPage = () => {
       e.preventDefault(); // prevent default form submission
   
       if (validationForm()) {
-        const response = await fetch("https://localhost:8000/user/login", {
+        const response = await fetch(`${backendHost}/user/login`, {
           method: "POST",
           body: JSON.stringify({ username: username, password: password }),
           headers: { "Content-Type": "application/json" },
