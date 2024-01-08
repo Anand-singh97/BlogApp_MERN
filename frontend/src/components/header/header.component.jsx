@@ -3,11 +3,12 @@ import { UserContext } from "../../contexts/user.context";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
 export const Header = () => {
+  const backendHost = process.env.BACKEND_HOST;
   const { setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
   const logout = async () => {
     try {
-      const response = await fetch("https://localhost:8000/user/logout", {
+      const response = await fetch(`${backendHost}/user/logout`, {
         credentials: "include",
         method: "GET",
       });
@@ -26,7 +27,7 @@ export const Header = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch("https://localhost:8000/user/auth", {
+        const response = await fetch(`${backendHost}/user/auth`, {
           credentials: "include",
           method: "GET",
         });
@@ -40,7 +41,7 @@ export const Header = () => {
       }
     };
     checkAuth();
-  }, [navigate]);
+  }, [navigate, backendHost]);
 
   return (
     <div>
