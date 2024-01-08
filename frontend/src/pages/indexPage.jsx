@@ -22,7 +22,7 @@ export const IndexPage = () => {
       }
     };
     getAllPosts();
-  }, []);
+  }, [backendHost]);
 
   if (allPosts.length === 0) {
     return (
