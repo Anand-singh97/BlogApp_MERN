@@ -38,11 +38,8 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   }));
-  
+
 app.use(passport.initialize());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
-  setHeaders: (res) => {console.log(__dirname);res.setHeader('Cross-Origin-Resource-Policy', 'same-site');},
-}));
 app.use('/user', userRoutes);
 app.use('/posts', postRouter); 
 
@@ -53,11 +50,7 @@ mongoose.connection.once('open', () => {
 mongoose.connection.on('error', (error) => {
     console.error(error);
 });
-
-const server = https.createServer(
-    { key: fs.readFileSync('key.pem'), cert: fs.readFileSync('cert.pem') },
-    app
-);
+const server = https.createServer(app);
 
 async function startServer() {
     await mongoose.connect(config.MONGO_URL);
