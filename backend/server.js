@@ -21,7 +21,7 @@ const config = {
     CLOUD_SECRET: process.env.CLOUD_SECRET
  };
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 app.use(helmet());
 app.use(express.json());
