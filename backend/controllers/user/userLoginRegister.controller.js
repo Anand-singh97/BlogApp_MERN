@@ -1,5 +1,5 @@
 const passport = require("passport");
-const CLIENT_URL = "http://localhost:3000/";
+const CLIENT_URL = "https://super-scone-037dbb.netlify.app";
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: "../../.env" });
 
@@ -38,7 +38,7 @@ async function getUserNameAndPassword(req, res) {
             res
             .cookie("token", jwtToken, {
                 httpOnly: true,
-                //secure:true, 
+                secure:true, 
                 maxAge:  3600000
             }).json({username:username, id:id});
         } 
@@ -67,7 +67,7 @@ async function checkUserNameAndPassword(req, res) {
             res
             .cookie("token", jwtToken, {
                 httpOnly: true,
-                //secure:true, 
+                secure:true, 
                 maxAge: 3600000
             }).json({username:username, id:id});
         } 
