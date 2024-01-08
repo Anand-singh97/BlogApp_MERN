@@ -33,7 +33,7 @@ cloudinary.v2.config({
 });
 app.use(cookieParser());
 app.use(cors({
-    origin:'https://main--super-scone-037dbb.netlify.app/',
+    origin:'https://main--super-scone-037dbb.netlify.app',
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
