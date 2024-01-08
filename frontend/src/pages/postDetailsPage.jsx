@@ -7,7 +7,6 @@ import { formatISO9075 } from "date-fns";
 import { Audio } from "react-loader-spinner";
 
 export const PostDetails = () => {
-  const backendHost = process.env.BACKEND_HOST;
   const [postData, setPostData] = useState(null);
   const { id } = useParams();
   const { currentUser } = useContext(UserContext);
@@ -23,7 +22,7 @@ export const PostDetails = () => {
     const getPostData = async () => {
       try {
         const response = await fetch(
-          `${backendHost}/posts/details/${id}`,
+          `https://blogappbackend-cmom.onrender.com/posts/details/${id}`,
           {
             credentials: "include",
           }
@@ -39,7 +38,7 @@ export const PostDetails = () => {
     };
 
     getPostData();
-  }, [id, currentUser, navigate, backendHost]);
+  }, [id, currentUser, navigate]);
 
   if (!postData) {
     return (

@@ -4,7 +4,6 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Audio } from "react-loader-spinner";
-const backendHost = process.env.BACKEND_HOST;
 
 export const EditPost = () => {
   const { id } = useParams();
@@ -74,7 +73,7 @@ export const EditPost = () => {
     {
         formData.append("imageFile", imageFile?.[0]);
     }
-    const response = await fetch(`${backendHost}/posts/updatePost`, {
+    const response = await fetch(`https://blogappbackend-cmom.onrender.com/posts/updatePost`, {
       method: "PUT",
       body: formData,
       credentials: "include",
@@ -90,7 +89,7 @@ export const EditPost = () => {
     const getPostData = async () => {
       try {
         const response = await fetch(
-          `${backendHost}/posts/details/${id}`,
+          `https://blogappbackend-cmom.onrender.com/posts/details/${id}`,
           {
             credentials: "include",
           }

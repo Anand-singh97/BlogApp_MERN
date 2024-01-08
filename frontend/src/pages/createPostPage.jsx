@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-const backendHost = process.env.BACKEND_HOST;
 
 const modules = {
   toolbar: [
@@ -70,7 +69,7 @@ const createNewPost = async(e)=>{
   formData.append('summary', summary);
   formData.append('content', content);
   formData.append('imageFile', imageFile);
-  const response = await fetch(`${backendHost}/posts/post`, {
+  const response = await fetch(`https://blogappbackend-cmom.onrender.com/posts/post`, {
     method:'POST',
     body: formData,
     credentials:'include'

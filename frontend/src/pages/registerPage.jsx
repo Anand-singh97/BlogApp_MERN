@@ -6,7 +6,6 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { UserContext } from "../contexts/user.context";
 
 export const RegisterPage = () => {
-  const backendHost = process.env.BACKEND_HOST;
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisibility, setPasswordVisibility] = useState(false);
@@ -57,7 +56,7 @@ export const RegisterPage = () => {
       e.preventDefault();
       if(validationForm())
       {
-        const response = await fetch(`${backendHost}/user/register`, {
+        const response = await fetch(`https://blogappbackend-cmom.onrender.com/user/register`, {
           method: "POST",
           body: JSON.stringify({ username: username, password: password }),
           headers: { "Content-Type": "application/json" },
@@ -176,8 +175,5 @@ export const RegisterPage = () => {
         </div>
       </form>
     </div>
-
-    //:
-    //<IndexPage/>
   );
 };
