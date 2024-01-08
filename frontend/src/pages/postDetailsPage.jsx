@@ -39,7 +39,7 @@ export const PostDetails = () => {
     };
 
     getPostData();
-  }, [id, currentUser, navigate]);
+  }, [id, currentUser, navigate, backendHost]);
 
   if (!postData) {
     return (

@@ -18,7 +18,6 @@ export const IndexPage = () => {
           setAllPosts(result);
         }
       } catch (error) {
-        console.log(error);
       }
     };
     getAllPosts();
