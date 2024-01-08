@@ -32,7 +32,13 @@ cloudinary.v2.config({
     api_secret: config.CLOUD_SECRET
 });
 app.use(cookieParser());
-app.use(cors({ origin: 'https://delicate-bonbon-ae2c0f.netlify.app', credentials: true }));
+app.use(cors({
+    origin: 'https://delicate-bonbon-ae2c0f.netlify.app',
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  }));
+  
 app.use(passport.initialize());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
   setHeaders: (res) => {console.log(__dirname);res.setHeader('Cross-Origin-Resource-Policy', 'same-site');},
