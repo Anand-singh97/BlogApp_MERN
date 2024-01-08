@@ -4,7 +4,6 @@ import { Audio } from "react-loader-spinner";
 
 export const IndexPage = () => {
   const [allPosts, setAllPosts] = useState([]);
-  const backendHost = process.env.BACKEND_HOST;
   useEffect(() => {
     const getAllPosts = async () => {
       try {
@@ -21,7 +20,7 @@ export const IndexPage = () => {
       }
     };
     getAllPosts();
-  }, [backendHost]);
+  }, []);
 
   if (allPosts.length === 0) {
     return (

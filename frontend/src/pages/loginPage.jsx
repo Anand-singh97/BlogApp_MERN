@@ -12,7 +12,6 @@ export const LoginPage = () => {
   const [errors, setErrors] = useState({});
   const { setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate(); // Hook for navigation
-  const backendHost = process.env.BACKEND_HOST;
 
   const openGoogleSignIn = () => {
     window.open(`https://blogappbackend-cmom.onrender.com/auth/google`, "_self");
