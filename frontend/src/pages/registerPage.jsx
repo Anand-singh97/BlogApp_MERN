@@ -50,7 +50,6 @@ export const RegisterPage = () => {
     return Object.keys(errorList).length === 0;
   }
 
-
   const submitForm = async (e) => {
     try {
       e.preventDefault();

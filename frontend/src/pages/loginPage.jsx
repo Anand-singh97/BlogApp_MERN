@@ -69,11 +69,18 @@ export const LoginPage = () => {
           const { username, id } = obj;
           setCurrentUser({ username: username, userId: id });
           navigate('/');
-        } else {
-          console.log(obj.message);
+        } 
+        else 
+        {
+          if(obj.message === 'User not found')
+          {
+            setErrors({username:'Invalid user'});
+          }
         }
       }
-    } catch (err) {
+    } 
+    catch (err) 
+    {
       console.log(err);
     }
   };
