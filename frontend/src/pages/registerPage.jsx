@@ -30,7 +30,7 @@ export const RegisterPage = () => {
   const validationForm = ()=>
   {
     const errorList = {};
-    if(!username.trim())
+    if(!username || !username.trim())
     {
       errorList.username = 'Username is required.';
     }
@@ -38,7 +38,7 @@ export const RegisterPage = () => {
     {
       errorList.username = 'Username must be at least 4 characters long.';
     }
-    if(!password.trim())
+    if(!password || !password.trim())
     {
       errorList.password = 'Password is required.'
     }
