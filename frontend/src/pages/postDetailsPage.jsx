@@ -13,11 +13,6 @@ export const PostDetails = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!currentUser || !currentUser.userId) {
-      alert('Session Ended');
-      navigate('/login');
-      return;
-    }
 
     const getPostData = async () => {
       try {

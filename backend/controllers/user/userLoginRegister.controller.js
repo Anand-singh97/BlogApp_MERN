@@ -100,7 +100,6 @@ function exchangeAuthCodeWithAccessToken(req, res, next) {
       }
   
       const jwtToken = user.accessToken;
-      const { username, id } = user.credentials;
       
       res.cookie("token", jwtToken, {
         httpOnly: true,
