@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { PostCard } from "../components/post-card/post-card.component";
 import { Audio } from "react-loader-spinner";
-import { useNavigate } from "react-router-dom";
 
 export const IndexPage = () => {
   const [allPosts, setAllPosts] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
 
