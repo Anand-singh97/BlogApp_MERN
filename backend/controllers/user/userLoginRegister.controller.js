@@ -1,5 +1,5 @@
 const passport = require("passport");
-const CLIENT_URL = "https://super-scone-037dbb.netlify.app";
+const CLIENT_URL = "https://super-scone-037dbb.netlify.app/";
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: "../../.env" });
 
@@ -88,25 +88,29 @@ function googleLoginPopup(req, res, next) {
   );
 }
 function exchangeAuthCodeWithAccessToken(req, res, next) {
-  passport.authenticate("google", {
-    successRedirect: CLIENT_URL,
-    failureRedirect: "/failure",
-    session: false,
-  }, 
-  async function(error, user)
-  {
-    const jwtToken = user.accessToken;
-    const {username, id} = user.credentials;
-    res
-            .cookie("token", jwtToken, {
-                httpOnly: true,
-                secure:true, 
-                maxAge: 3600000
-            }).json({username:username, id:id})
-            
-            next();
-  })(req, res, next);
+    passport.authenticate("google", {
+      successRedirect: CLIENT_URL,
+      failureRedirect: "/failure",
+      session: false,
+    }, 
+    async function(error, user) {
+      if (error) {
+        console.error('Authentication error:', error);
+        return res.redirect('/failure');
+      }
+  
+      const jwtToken = user.accessToken;
+      const { username, id } = user.credentials;
+      
+      res.cookie("token", jwtToken, {
+        httpOnly: true,
+        secure: true,
+        maxAge: 3600000
+      });
+      res.redirect(CLIENT_URL);
+    })(req, res, next);
 }
+
 function logoutUser(req, res){
     try {
         res.clearCookie('token', {
