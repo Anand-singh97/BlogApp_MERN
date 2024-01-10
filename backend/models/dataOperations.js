@@ -1,3 +1,4 @@
+const { use } = require("passport");
 const { userCollection, googleUserModel, postsModel } = require("./user.mongo");
 const bcrypt = require("bcrypt");
 
@@ -73,16 +74,21 @@ async function findUserInGoogleAuthAccounts(username, googleAccountId, email) {
       googleAccountId: googleAccountId,
     });
     if (user) {
-      return { message: "Done" };
+      const user = await googleUserModel.findOne({ username });
+      return { message: "Done", result: {username:user.username, id:user._id}};
     } else {
       const response = await saveDataInGoogleAuthAccounts(
         username,
         googleAccountId,
         email
       );
-      if (response.message === "Done") {
-        return { message: response.message };
-      } else {
+      if (response.message === "Done") 
+      {
+        const user = await googleUserModel.findOne({ username });
+        return { message: "Done", result: {username:user.username, id:user._id}};
+      } 
+      else 
+      {
         return { message: response.message };
       }
     }

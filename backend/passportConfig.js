@@ -2,6 +2,7 @@ const passport = require("passport");
 const { Strategy } = require("passport-google-oauth20");
 require('dotenv').config({path: "../.env"});
 const {findUserInGoogleAuthAccounts} = require('./models/dataOperations');
+const jwt = require('jsonwebtoken');
 
 const config = {
     CLIENT_ID: process.env.CLIENT_ID,
@@ -24,6 +25,13 @@ async function verifyCallback(accessToken, refreshToken, profile, done) {
         const response = await findUserInGoogleAuthAccounts(displayName, id, email);
         if(response.message === 'Done')
         {
+            const payload = response.result;
+            const secret = process.env.JWT_SECRET;
+            const options = { expiresIn: "1h" };
+            const {username, id} = payload;
+            const token = jwt.sign(payload, secret, options);
+            profile.accessToken = token;
+            profile.credentials = {username, id};
             done(null, profile);
         }
         else

@@ -92,6 +92,18 @@ function exchangeAuthCodeWithAccessToken(req, res, next) {
     successRedirect: CLIENT_URL,
     failureRedirect: "/failure",
     session: false,
+  }, 
+  async function(error, user)
+  {
+    const jwtToken = user.accessToken;
+    const {username, id} = user.credentials;
+    res
+            .cookie("token", jwtToken, {
+                httpOnly: true,
+                secure:true, 
+                maxAge: 3600000
+            }).json({username:username, id:id})
+
   })(req, res, next);
 }
 function logoutUser(req, res){
