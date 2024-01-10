@@ -25,7 +25,6 @@ async function verifyCallback(accessToken, refreshToken, profile, done) {
         if(response.message === 'Done')
         {
             done(null, profile);
-            
         }
         else
         {

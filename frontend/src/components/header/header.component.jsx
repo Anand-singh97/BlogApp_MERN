@@ -1,11 +1,13 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/user.context";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-
+import { Audio } from "react-loader-spinner";
 export const Header = () => {
   const backendHost = process.env.BACKEND_HOST;
   const { setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const [isUserValid, setIsUserValid] = useState(false);
+
   const logout = async () => {
     try {
       const response = await fetch(`${backendHost}/user/logout`, {
@@ -34,6 +36,9 @@ export const Header = () => {
 
         if (!response.ok) {
           navigate("/login");
+        }else
+        {
+          setIsUserValid(true);
         }
       } catch (error) {
         console.log(error);
@@ -42,6 +47,22 @@ export const Header = () => {
     };
     checkAuth();
   }, [navigate, backendHost]);
+
+  if(!isUserValid)
+  {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Audio
+          height="80"
+          width="80"
+          radius="9"
+          color="green"
+          ariaLabel="loading"
+          wrapperStyle
+          wrapperClass
+        />
+      </div>);
+  }
 
   return (
     <div>

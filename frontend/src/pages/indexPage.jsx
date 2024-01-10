@@ -6,30 +6,8 @@ import { useNavigate } from "react-router-dom";
 export const IndexPage = () => {
   const [allPosts, setAllPosts] = useState([]);
   const navigate = useNavigate();
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await fetch(
-          `https://blogappbackend-cmom.onrender.com/user/auth`,
-          {
-            credentials: "include",
-            method: "GET",
-          }
-        );
 
-        if (!response.ok) {
-          navigate("/login");
-        }
-        else
-        {
-          getAllPosts();
-        }
-      } catch (error) {
-        console.log(error);
-        navigate("/login");
-      }
-    };
-    checkAuth();
+  useEffect(() => {
 
     const getAllPosts = async () => {
       try {
@@ -47,7 +25,9 @@ export const IndexPage = () => {
         }
       } catch (error) {}
     };
-  }, [navigate]);
+    getAllPosts();
+
+  }, []);
 
   if (allPosts.length === 0) {
     return (
