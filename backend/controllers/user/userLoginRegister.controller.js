@@ -95,19 +95,14 @@ function exchangeAuthCodeWithAccessToken(req, res, next) {
   })(req, res, next);
 }
 function logoutUser(req, res){
-    try
-    {
-        return res.cookie('token', '', 
-        {
-            expires: new Date(0),
-            httpOnly: true,
-            secure: true,
-        }).json('ok');
-    }
-    catch(error)
-    {
-        return res.status(501).json({message:error.message});
-    }
+    try {
+        res.clearCookie('token', {
+          httpOnly: true,
+          secure: true,
+        }).status(204).end(); // Use status code 204 to indicate successful action without content
+      } catch (error) {
+        res.status(500).json({ message: error.message }); // Consider using 500 Internal Server Error for server errors
+      }
 }
 
 module.exports = {
