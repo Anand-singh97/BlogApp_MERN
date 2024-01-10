@@ -52,6 +52,11 @@ export const LoginPage = () => {
     return Object.keys(errorList).length === 0;
   }
 
+  const fillTestAccountCredentials = ()=>{
+    setUsername('test');
+    setPassword('test');
+  }
+
   const sendForm = async (e) => {
     try {
       e.preventDefault(); // prevent default form submission
@@ -149,12 +154,22 @@ export const LoginPage = () => {
               />
               <span className=" text-red-500">{errors.password ? errors.password : ''}</span>
             </div>
+            <div className=" flex flex-col items-center gap-2">
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full"
             >
               Login
             </button>
+            <p>OR</p>
+            <button onClick={fillTestAccountCredentials}
+              type="submit"
+              className="bg-green-800 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-[50%]"
+            >
+              Fill test Credentials
+            </button>
+            </div>
+            
 
             <div class="mt-6 text-center">
               <div className="flex flex-col  gap-2">
