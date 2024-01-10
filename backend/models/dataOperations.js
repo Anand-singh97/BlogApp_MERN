@@ -152,7 +152,7 @@ async function updateUserPost(title, summary, content, postId, newPath) {
         title,
         summary,
         content,
-        imageLocation: newPath !== '' ? newPath : post.imageLocation
+        imageLocation: newPath !== null ? newPath : post.imageLocation
       });
   
       return { message: 'Done' };

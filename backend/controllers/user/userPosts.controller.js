@@ -66,14 +66,13 @@ async function showPostDetails(req, res) {
 async function updatePost(req, res) {
   
   try {
-    let newPath = "";
+    let newPath = null;
     const { title, summary, content, postId } = req.body;
     if (req.file) {
-      const { originalname, path } = req.file;
-      const parts = originalname.split(".");
-      const ext = parts[parts.length - 1];
-      newPath = path + "." + ext;
-      fs.renameSync(path, newPath);
+      const file = req.file; 
+      const fileUri = getDataUri(file);
+      const myCloud = await cloudinary.v2.uploader.upload(fileUri.content);
+      newPath = { public_id: myCloud.public_id, secure_url: myCloud.secure_url };
     }
     const response = await updateUserPost(title, summary, content, postId, newPath);
     res
@@ -85,6 +84,7 @@ async function updatePost(req, res) {
       .json({ message: "Error updating post", error: error.message });
   }
 }
+
 module.exports = {
   createPost,
   showAllPosts,
