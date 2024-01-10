@@ -181,17 +181,14 @@ export const LoginPage = () => {
                   </Link>{" "}
                   now
                 </p>
-                <div>
-                  <p className="text-black">OR</p>
-                </div>
-                <Link
+                {/* <Link
                   onClick={openGoogleSignIn}
                   className=" text-white font-semibold px-5 py-2
                 bg-blue-500 rounded-lg"
                   type="button"
                 >
                   Sign In With Google
-                </Link>
+                </Link> */}
               </div>
             </div>
           </div>
