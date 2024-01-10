@@ -1,26 +1,38 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { PostCard } from "../components/post-card/post-card.component";
 import { Audio } from "react-loader-spinner";
+import { UserContext } from "../contexts/user.context";
+import { useNavigate } from "react-router-dom";
 
 export const IndexPage = () => {
   const [allPosts, setAllPosts] = useState([]);
+  const {currentUser} = useContext(UserContext);
+  const navigate = useNavigate();
   useEffect(() => {
-    const getAllPosts = async () => {
-      try {
-        const response = await fetch( `https://blogappbackend-cmom.onrender.com/posts/post`, {
-          method: "GET",
-          credentials: "include",
-        });
-        if (response.ok) {
-          const obj = await response.json();
-          const { result } = obj;
-          setAllPosts(result);
+
+    if(currentUser)
+    {
+      const getAllPosts = async () => {
+        try {
+          const response = await fetch( `https://blogappbackend-cmom.onrender.com/posts/post`, {
+            method: "GET",
+            credentials: "include",
+          });
+          if (response.ok) {
+            const obj = await response.json();
+            const { result } = obj;
+            setAllPosts(result);
+          }
+        } catch (error) {
         }
-      } catch (error) {
-      }
-    };
-    getAllPosts();
-  }, []);
+      };
+      getAllPosts();
+    }else
+    {
+      navigate('/login');
+    }
+    
+  }, [currentUser, navigate]);
 
   if (allPosts.length === 0) {
     return (

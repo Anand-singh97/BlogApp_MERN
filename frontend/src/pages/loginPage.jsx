@@ -74,7 +74,7 @@ export const LoginPage = () => {
         {
           if(obj.message === 'User not found')
           {
-            setErrors({username:'Invalid user'});
+            setErrors({username:'Invalid username'});
           }
         }
       }
