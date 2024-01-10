@@ -103,7 +103,8 @@ function exchangeAuthCodeWithAccessToken(req, res, next) {
                 secure:true, 
                 maxAge: 3600000
             }).json({username:username, id:id})
-
+            
+            next();
   })(req, res, next);
 }
 function logoutUser(req, res){
