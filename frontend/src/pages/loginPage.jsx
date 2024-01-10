@@ -14,7 +14,7 @@ export const LoginPage = () => {
   const navigate = useNavigate(); // Hook for navigation
 
   const openGoogleSignIn = () => {
-    window.open(`https://blogappbackend-cmom.onrender.com/auth/google`, "_self");
+    window.open(`https://blogappbackend-cmom.onrender.com/user/auth/google`, "_self");
   };
   const makePasswordVisible = () => {
     setPasswordVisibility(!passwordVisibility);
