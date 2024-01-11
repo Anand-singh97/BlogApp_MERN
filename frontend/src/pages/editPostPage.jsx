@@ -84,7 +84,7 @@ export const EditPost = () => {
 
   const updatePost = async (e) => {
     e.preventDefault();
-    if(validation)
+    if(validation())
     {
       const formData = new FormData();
       formData.append("title", title);
