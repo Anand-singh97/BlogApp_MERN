@@ -64,7 +64,6 @@ async function showPostDetails(req, res) {
 }
 
 async function updatePost(req, res) {
-  
   try {
     let newPath = null;
     const { title, summary, content, postId } = req.body;

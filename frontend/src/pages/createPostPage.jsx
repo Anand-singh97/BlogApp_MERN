@@ -44,6 +44,7 @@ export const CreatePost = () => {
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
   const [imageFile, setImageFile] = useState('');
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
 const updateTitle = (event)=>{
@@ -62,21 +63,44 @@ const updateImageFile = (event)=>{
   setImageFile(files[0]);
 }
 
+const validation = ()=>{
+  const errorList = {};
+  if(!title || !title.trim())
+  {
+    errorList.titleError = 'Title Cannot be empty';
+  }
+  if(!summary || !summary.trim())
+  {
+    errorList.summaryError = 'Summary Cannot be empty';
+  }
+  if(!content || !content.trim())
+  {
+    errorList.contentError = 'Content Cannot be empty';
+  }
+  setErrors(errorList);
+  if(Object.keys(errorList) === 0) return false;
+  return true;
+}
+
 const createNewPost = async(e)=>{
   e.preventDefault();
-  const formData = new FormData();
-  formData.append('title', title);
-  formData.append('summary', summary);
-  formData.append('content', content);
-  formData.append('imageFile', imageFile);
-  const response = await fetch(`https://blogappbackend-cmom.onrender.com/posts/post`, {
-    method:'POST',
-    body: formData,
-    credentials:'include'
-  });
-  if(response.ok)
+
+  if(validation)
   {
-    navigate('/');
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('summary', summary);
+    formData.append('content', content);
+    formData.append('imageFile', imageFile);
+    const response = await fetch(`https://blogappbackend-cmom.onrender.com/posts/post`, {
+      method:'POST',
+      body: formData,
+      credentials:'include'
+    });
+    if(response.ok)
+    {
+      navigate('/');
+    }
   }
 }
   return (
@@ -107,6 +131,7 @@ const createNewPost = async(e)=>{
             className="w-full border border-gray-300 bg-green-100 rounded-md 
             py-2 px-3 focus:outline-none focus:border-blue-500"
           />
+          {errors.titleError ? <span>{errors.titleError}</span> : <></>}
         </div>
         <div>
           <label for="summary" className="block text-gray-600">
@@ -121,6 +146,7 @@ const createNewPost = async(e)=>{
             className="w-full border border-gray-300 bg-green-100 rounded-md py-2 px-3 focus:outline-none
                     focus:border-blue-500"
           />
+          {errors.summaryError ? <span>{errors.summaryError}</span> : <></>}
         </div>
         <div className="w-fit p-2 rounded-xl">
           <label for="fileInput" className="block text-gray-600">
@@ -129,13 +155,17 @@ const createNewPost = async(e)=>{
           <input onChange={updateImageFile} className="border-2 p-2 rounded-lg" type="file" id="fileInput" name="fileInput" />
         </div>
 
-        <ReactQuill
-          onChange={updateContent}
-          value={content}
-          modules={modules}
-          formats={formats}
-          className=""
-        />
+        <div>
+          <ReactQuill
+            onChange={updateContent}
+            value={content}
+            modules={modules}
+            formats={formats}
+            className=""
+          />
+          {errors.summaryError ? <span>{errors.summaryError}</span> : <></>}
+        </div>
+        
         <div className=" text-center">
           <button type="submit" className="mt-5 bg-green-300 w-[35%] hover:bg-green-800 text-black font-semibold py-2 px-4">
             Post
