@@ -77,6 +77,10 @@ const validation = ()=>{
   {
     errorList.contentError = 'Content Cannot be empty';
   }
+  if(!imageFile)
+  {
+    errorList.imageFileError = 'No image selected';
+  }
   setErrors(errorList);
   return Object.keys(errorList).length === 0;
 }
@@ -152,6 +156,7 @@ const createNewPost = async(e)=>{
             Add image
           </label>
           <input onChange={updateImageFile} className="border-2 p-2 rounded-lg" type="file" id="fileInput" name="fileInput" />
+          {errors.imageFileError ? <span className=" text-red-500">{errors.imageFileError}</span> : <></>}
         </div>
 
         <div>
