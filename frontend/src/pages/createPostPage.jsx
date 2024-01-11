@@ -167,7 +167,7 @@ const createNewPost = async(e)=>{
             formats={formats}
             className=""
           />
-          {errors.summaryError ? <span className=" text-red-500">{errors.summaryError}</span> : <></>}
+          {errors.contentError ? <span className=" text-red-500">{errors.contentError}</span> : <></>}
         </div>
         
         <div className=" text-center">

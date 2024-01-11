@@ -13,6 +13,8 @@ export const EditPost = () => {
   const [content, setContent] = useState("");
   const [imageFile, setImageFile] = useState("");
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
+
   const modules = {
     toolbar: [
       ["bold", "italic", "underline", "strike"],
@@ -62,28 +64,47 @@ export const EditPost = () => {
     setImageFile(files);
   };
 
+  const validation = ()=>{
+    const errorList = {};
+    if(!title || !title.trim())
+    {
+      errorList.titleError = 'Title Cannot be empty';
+    }
+    if(!summary || !summary.trim())
+    {
+      errorList.summaryError = 'Summary Cannot be empty';
+    }
+    if(!content || !content.trim())
+    {
+      errorList.contentError = 'Content Cannot be empty';
+    }
+    setErrors(errorList);
+    return Object.keys(errorList).length === 0;
+  }
+
   const updatePost = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("summary", summary);
-    formData.append("content", content);
-    formData.append("postId", id);
-    if(imageFile?.[0])
+    if(validation)
     {
-        formData.append("imageFile", imageFile?.[0]);
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("summary", summary);
+      formData.append("content", content);
+      formData.append("postId", id);
+      if(imageFile?.[0])
+      {
+          formData.append("imageFile", imageFile?.[0]);
+      }
+      const response = await fetch(`https://blogappbackend-cmom.onrender.com/posts/updatePost`, {
+        method: "PUT",
+        body: formData,
+        credentials: "include",
+      });
+      if (response.ok) {
+        navigate(`/postDetails/${id}`);
+      }
     }
-    const response = await fetch(`https://blogappbackend-cmom.onrender.com/posts/updatePost`, {
-      method: "PUT",
-      body: formData,
-      credentials: "include",
-    });
-    if (response.ok) {
-      navigate(`/postDetails/${id}`);
-    }
-    else{
-        console.log(response);
-    }
+    
   };
   useEffect(() => {
     const getPostData = async () => {
@@ -154,6 +175,7 @@ export const EditPost = () => {
             className="w-full border border-gray-300 bg-green-100 rounded-md 
             py-2 px-3 focus:outline-none focus:border-blue-500"
           />
+          {errors.titleError ? <span className=" text-red-500">{errors.titleError}</span> : <></>}
         </div>
         <div>
           <label for="summary" className="block text-gray-600">
@@ -168,6 +190,7 @@ export const EditPost = () => {
             className="w-full border border-gray-300 bg-green-100 rounded-md py-2 px-3 focus:outline-none
                     focus:border-blue-500"
           />
+          {errors.summaryError ? <span className=" text-red-500">{errors.summaryError}</span> : <></>}
         </div>
         <div className="w-fit p-2 rounded-xl">
           <label for="fileInput" className="block text-gray-600">
@@ -182,13 +205,17 @@ export const EditPost = () => {
           />
         </div>
 
-        <ReactQuill
-          onChange={updateContent}
-          value={content}
-          modules={modules}
-          formats={formats}
-          className=""
-        />
+        <div>
+          <ReactQuill
+            onChange={updateContent}
+            value={content}
+            modules={modules}
+            formats={formats}
+            className=""
+          />
+          {errors.contentError ? <span className=" text-red-500">{errors.contentError}</span> : <></>}
+        </div>
+        
         <div className=" text-center">
           <button
             type="submit"
