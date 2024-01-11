@@ -78,14 +78,13 @@ const validation = ()=>{
     errorList.contentError = 'Content Cannot be empty';
   }
   setErrors(errorList);
-  if(Object.keys(errorList) === 0) return false;
-  return true;
+  return Object.keys(errorList).length === 0;
 }
 
 const createNewPost = async(e)=>{
   e.preventDefault();
 
-  if(validation)
+  if(validation())
   {
     const formData = new FormData();
     formData.append('title', title);
@@ -131,7 +130,7 @@ const createNewPost = async(e)=>{
             className="w-full border border-gray-300 bg-green-100 rounded-md 
             py-2 px-3 focus:outline-none focus:border-blue-500"
           />
-          {errors.titleError ? <span>{errors.titleError}</span> : <></>}
+          {errors.titleError ? <span className=" text-red-500">{errors.titleError}</span> : <></>}
         </div>
         <div>
           <label for="summary" className="block text-gray-600">
@@ -146,7 +145,7 @@ const createNewPost = async(e)=>{
             className="w-full border border-gray-300 bg-green-100 rounded-md py-2 px-3 focus:outline-none
                     focus:border-blue-500"
           />
-          {errors.summaryError ? <span>{errors.summaryError}</span> : <></>}
+          {errors.summaryError ? <span className=" text-red-500">{errors.summaryError}</span> : <></>}
         </div>
         <div className="w-fit p-2 rounded-xl">
           <label for="fileInput" className="block text-gray-600">
@@ -163,7 +162,7 @@ const createNewPost = async(e)=>{
             formats={formats}
             className=""
           />
-          {errors.summaryError ? <span>{errors.summaryError}</span> : <></>}
+          {errors.summaryError ? <span className=" text-red-500">{errors.summaryError}</span> : <></>}
         </div>
         
         <div className=" text-center">
