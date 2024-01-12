@@ -1,103 +1,93 @@
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { useState, useContext } from "react";
 import blurBg from "../images/blurBg.jpg";
 import blogging from "../images/blogging.png";
 import { UserContext } from "../contexts/user.context";
 
-export const LoginPage = () => {
+const LoginPage = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
-  const [username, setUsername] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { setCurrentUser } = useContext(UserContext);
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
-  // const openGoogleSignIn = () => {
-  //   window.open(`https://blogappbackend-cmom.onrender.com/user/auth/google`, "_self");
-  // };
   const makePasswordVisible = () => {
     setPasswordVisibility(!passwordVisibility);
   };
+
   const updateUsername = (event) => {
-    const { value } = event.target;
-    setUsername(value);
-  };
-  const updatePassword = (event) => {
-    const { value } = event.target;
-    setPassword(value);
+    setUsername(event.target.value);
   };
 
-  const validationForm = ()=>
-  {
+  const updatePassword = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const validationForm = () => {
     const errorList = {};
 
-    if(!username || !username.trim())
-    {
+    if (!username.trim()) {
       errorList.username = 'Username is required.';
-    }
-    else if(username.trim().length < 4)
-    {
+    } else if (username.trim().length < 4) {
       errorList.username = 'Username must be at least 4 characters long.';
     }
-    if(!password || !password.trim())
-    {
-      errorList.password = 'Password is required.'
-    }
-    else if(password.trim().length < 4)
-    {
+
+    if (!password.trim()) {
+      errorList.password = 'Password is required.';
+    } else if (password.trim().length < 4) {
       errorList.password = 'Password must be at least 4 characters long.';
     }
+
     setErrors(errorList);
     return Object.keys(errorList).length === 0;
-  }
+  };
 
-  const fillTestAccountCredentials = ()=>{
+  const fillTestAccountCredentials = () => {
     setUsername('test');
     setPassword('test');
-  }
+  };
 
   const sendForm = async (e) => {
     try {
       e.preventDefault(); // prevent default form submission
-  
+
       if (validationForm()) {
-        const response = await fetch(`https://blogappbackend-cmom.onrender.com/user/login`, {
-          method: "POST",
-          body: JSON.stringify({ username: username, password: password }),
-          headers: { "Content-Type": "application/json" },
-          credentials: 'include'
-        });
-        
+        const response = await fetch(
+          `https://blogappbackend-cmom.onrender.com/user/login`,
+          {
+            method: "POST",
+            body: JSON.stringify({ username, password }),
+            headers: { "Content-Type": "application/json" },
+            credentials: 'include',
+          }
+        );
+
         const obj = await response.json();
         if (response.ok) {
           const { username, id } = obj;
-          setCurrentUser({ username: username, userId: id });
+          setCurrentUser({ username, userId: id });
           navigate('/');
-        } 
-        else 
-        {
-          if(obj.message === 'User not found')
-          {
-            setErrors({username:'Invalid username'});
+        } else {
+          if (obj.message === 'User not found') {
+            setErrors({ username: 'Invalid username' });
           }
         }
       }
-    } 
-    catch (err) 
-    {
+    } catch (err) {
       console.log(err);
     }
   };
-
 
   return (
     <div
       style={{
         backgroundImage: `url(${blurBg})`,
         backgroundSize: "cover",
-        backgroundPosition: "center"
-      }}>
+        backgroundPosition: "center",
+      }}
+    >
       <div>
         <img alt="gbImage" src={blurBg} style={{ display: "none" }} />
       </div>
@@ -116,10 +106,10 @@ export const LoginPage = () => {
           </p>
         </div>
         <div className="flex mt-[4rem] justify-center items-center h-screen">
-          <div className=" sm:w-[30rem] w-[25rem] backdrop-blur-lg bg-opacity-30 bg-white rounded-xl p-8">
+          <div className="sm:w-[30rem] w-[25rem] backdrop-blur-lg bg-opacity-30 bg-white rounded-xl p-8">
             <h1 className="text-2xl text-center font-semibold mb-4">Login</h1>
             <div className="mb-4">
-              <label for="username" className="block text-gray-600">
+              <label htmlFor="username" className="block text-gray-600">
                 Username
               </label>
               <input
@@ -127,13 +117,12 @@ export const LoginPage = () => {
                 type="text"
                 id="username"
                 name="username"
-                className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none
-                      focus:border-blue-500"
+                className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
                 value={username}
               />
-              <span className=" text-red-500">{errors.username ? errors.username : ''}</span>
+              <span className="text-red-500">{errors.username || ''}</span>
             </div>
-            <div class="mb-4 relative">
+            <div className="mb-4 relative">
               <div
                 onMouseDown={makePasswordVisible}
                 onMouseUp={makePasswordVisible}
@@ -141,54 +130,44 @@ export const LoginPage = () => {
               >
                 <VisibilityIcon />
               </div>
-              <label for="password" class="block text-gray-600">
+              <label htmlFor="password" className="block text-gray-600">
                 Password
               </label>
               <input
                 onChange={updatePassword}
-                type={passwordVisibility ? "text" : "password"}
+                type={passwordVisibility ? 'text' : 'password'}
                 id="password"
                 name="password"
                 className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
                 value={password}
               />
-              <span className=" text-red-500">{errors.password ? errors.password : ''}</span>
+              <span className="text-red-500">{errors.password || ''}</span>
             </div>
-            <div className=" flex flex-col items-center gap-2">
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full"
-            >
-              Login
-            </button>
-            <p>OR</p>
-            <button onClick={fillTestAccountCredentials}
-              type="button"
-              className="bg-green-800 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-[50%]"
-            >
-              Fill test Credentials
-            </button>
+            <div className="flex flex-col items-center gap-2">
+              <button
+                type="submit"
+                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full"
+              >
+                Login
+              </button>
+              <p>OR</p>
+              <button
+                onClick={fillTestAccountCredentials}
+                type="button"
+                className="bg-green-800 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-[50%]"
+              >
+                Fill test Credentials
+              </button>
             </div>
-            
-
-            <div class="mt-6 text-center">
-              <div className="flex flex-col  gap-2">
+            <div className="mt-6 text-center">
+              <div className="flex flex-col gap-2">
                 <p>
                   Don’t have an account yet?
-                  <Link to="/register" class="underline hover:text-blue-900">
-                    {" "}
+                  <Link to="/register" className="underline hover:text-blue-900">
                     Register
-                  </Link>{" "}
+                  </Link>{' '}
                   now
                 </p>
-                {/* <Link
-                  onClick={openGoogleSignIn}
-                  className=" text-white font-semibold px-5 py-2
-                bg-blue-500 rounded-lg"
-                  type="button"
-                >
-                  Sign In With Google
-                </Link> */}
               </div>
             </div>
           </div>
@@ -197,3 +176,5 @@ export const LoginPage = () => {
     </div>
   );
 };
+
+export default LoginPage;

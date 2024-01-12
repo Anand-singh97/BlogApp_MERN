@@ -1,6 +1,5 @@
-const { use } = require("passport");
-const { userCollection, googleUserModel, postsModel } = require("./user.mongo");
 const bcrypt = require("bcrypt");
+const { userCollection, googleUserModel, postsModel } = require("./user.mongo");
 
 async function hashPassword(password) {
   const saltRounds = 10;
@@ -8,36 +7,41 @@ async function hashPassword(password) {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     return { message: "Done", result: hashedPassword };
   } catch (error) {
-    return { message: error };
+    return { message: error.message };
   }
 }
+
 async function comparePassword(enteredPassword, hashedPasswordFromDatabase) {
   try {
-    const response = await bcrypt.compare(
-      enteredPassword,
-      hashedPasswordFromDatabase
-    );
-    if (response) return { message: "Done" };
-    else return { message: "Password did not match" };
+    const response = await bcrypt.compare(enteredPassword, hashedPasswordFromDatabase);
+    return response
+      ? { message: "Done" }
+      : { message: "Password did not match" };
   } catch (error) {
     return { message: error.message };
   }
 }
+
 async function saveDataInRegisteredAccounts(username, password) {
   try {
-    const response = await hashPassword(password);
-    if (response.message === "Done") {
-      const hashedPassword = response.result;
+    const hashedPasswordResponse = await hashPassword(password);
+
+    if (hashedPasswordResponse.message === "Done") {
+      const hashedPassword = hashedPasswordResponse.result;
       await userCollection.create({ username, password: hashedPassword });
+
       const user = await findUserInRegisteredAccounts(username, password);
       const { result } = user;
       const payloadForJwtToken = result;
       return { message: "Done", result: payloadForJwtToken };
+    } else {
+      return { message: hashedPasswordResponse.message };
     }
   } catch (error) {
     return { message: error.message };
   }
 }
+
 async function saveDataInGoogleAuthAccounts(username, googleAccountId, email) {
   try {
     await googleUserModel.create({
@@ -45,17 +49,21 @@ async function saveDataInGoogleAuthAccounts(username, googleAccountId, email) {
       googleAccountId,
       email,
     });
+
     return { message: "Done" };
   } catch (error) {
     return { message: error.message };
   }
 }
+
 async function findUserInRegisteredAccounts(username, password) {
   try {
     const user = await userCollection.findOne({ username });
+
     if (user) {
-      const response = await comparePassword(password, user.password);
-      if (response.message === "Done") {
+      const passwordComparison = await comparePassword(password, user.password);
+
+      if (passwordComparison.message === "Done") {
         const payloadForJwtToken = { username: user.username, id: user._id };
         return { message: "Done", result: payloadForJwtToken };
       } else {
@@ -68,27 +76,20 @@ async function findUserInRegisteredAccounts(username, password) {
     return { message: error.message };
   }
 }
+
 async function findUserInGoogleAuthAccounts(username, googleAccountId, email) {
   try {
-    const user = await googleUserModel.findOne({
-      googleAccountId: googleAccountId,
-    });
+    const user = await googleUserModel.findOne({ googleAccountId });
+
     if (user) {
-      const user = await googleUserModel.findOne({ username });
-      return { message: "Done", result: {username:user.username, id:user._id}};
+      return { message: "Done", result: { username: user.username, id: user._id } };
     } else {
-      const response = await saveDataInGoogleAuthAccounts(
-        username,
-        googleAccountId,
-        email
-      );
-      if (response.message === "Done") 
-      {
-        const user = await googleUserModel.findOne({ username });
-        return { message: "Done", result: {username:user.username, id:user._id}};
-      } 
-      else 
-      {
+      const response = await saveDataInGoogleAuthAccounts(username, googleAccountId, email);
+
+      if (response.message === "Done") {
+        const newUser = await googleUserModel.findOne({ username });
+        return { message: "Done", result: { username: newUser.username, id: newUser._id } };
+      } else {
         return { message: response.message };
       }
     }
@@ -96,28 +97,24 @@ async function findUserInGoogleAuthAccounts(username, googleAccountId, email) {
     return { message: error.message };
   }
 }
-async function addBlogPost(
-  title,
-  summary,
-  content,
-  imageLocation,
-  authorId,
-  authorType
-) {
+
+async function addBlogPost(title, summary, content, imageLocation, authorId, authorType) {
   try {
     await postsModel.create({
-      title: title,
-      summary: summary,
-      content: content,
-      imageLocation: {id:imageLocation.public_id, url:imageLocation.secure_url},
+      title,
+      summary,
+      content,
+      imageLocation: { id: imageLocation.public_id, url: imageLocation.secure_url },
       author: authorId,
-      authorType: authorType,
+      authorType,
     });
+
     return { message: "Done" };
   } catch (error) {
     return { message: error.message };
   }
 }
+
 async function getAllPosts() {
   try {
     const posts = await postsModel
@@ -125,6 +122,7 @@ async function getAllPosts() {
       .populate("author", ["username"])
       .sort({ createdAt: -1 })
       .limit(20);
+
     return { message: "Done", result: posts };
   } catch (error) {
     return { message: error.message };
@@ -134,7 +132,8 @@ async function getAllPosts() {
 async function findPost(id) {
   try {
     const post = await postsModel.findById(id).populate("author", ["username"]);
-    if (post != null) {
+
+    if (post) {
       return { message: "Done", result: post };
     } else {
       return { message: "No post found" };
@@ -145,21 +144,21 @@ async function findPost(id) {
 }
 
 async function updateUserPost(title, summary, content, postId, newPath) {
-    try {
-      const post = await postsModel.findById(postId);
-  
-      await post.updateOne({
-        title,
-        summary,
-        content,
-        imageLocation: newPath !== null ? {id:newPath.public_id, url:newPath.secure_url} : post.imageLocation
-      });
-  
-      return { message: 'Done' };
-    } catch (error) {
-      throw new Error(error.message);
-    }
+  try {
+    const post = await postsModel.findById(postId);
+
+    await post.updateOne({
+      title,
+      summary,
+      content,
+      imageLocation: newPath !== null ? { id: newPath.public_id, url: newPath.secure_url } : post.imageLocation,
+    });
+
+    return { message: 'Done' };
+  } catch (error) {
+    return { message: error.message };
   }
+}
 
 module.exports = {
   saveDataInRegisteredAccounts,
