@@ -4,7 +4,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Audio } from "react-loader-spinner";
 export const Header = () => {
   const backendHost = process.env.BACKEND_HOST;
-  const { setCurrentUser } = useContext(UserContext);
+  const { setCurrentUser,  currentUser} = useContext(UserContext);
   const navigate = useNavigate();
   const [isUserValid, setIsUserValid] = useState(false);
 
@@ -92,6 +92,9 @@ export const Header = () => {
               >
                 Logout
               </Link>
+              <div>
+                Hi <span className=" font-semibold">{currentUser.username}</span>
+              </div>
             </div>
           </nav>
         </header>

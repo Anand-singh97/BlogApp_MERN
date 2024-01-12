@@ -163,7 +163,7 @@ export const LoginPage = () => {
             </button>
             <p>OR</p>
             <button onClick={fillTestAccountCredentials}
-              type="submit"
+              type="button"
               className="bg-green-800 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-[50%]"
             >
               Fill test Credentials
