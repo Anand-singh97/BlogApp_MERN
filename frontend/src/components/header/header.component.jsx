@@ -10,7 +10,7 @@ const LoadingSpinner = () => (
 );
 
 export const Header = () => {
-  const backendHost = process.env.BACKEND_HOST;
+
   const { setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -18,7 +18,7 @@ export const Header = () => {
 
   const logout = async () => {
     try {
-      const response = await fetch(`${backendHost}/user/logout`, {
+      const response = await fetch(`https://blogappbackend-cmom.onrender.com/user/logout`, {
         credentials: "include",
         method: "GET",
       });
@@ -38,7 +38,7 @@ export const Header = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch(`${backendHost}/user/auth`, {
+        const response = await fetch(`https://blogappbackend-cmom.onrender.com/user/auth`, {
           credentials: "include",
           method: "GET",
         });
@@ -57,7 +57,7 @@ export const Header = () => {
     };
 
     checkAuth();
-  }, [navigate, backendHost, setIsUserValid]);
+  }, [navigate, setIsUserValid]);
 
   if (loading) {
     return <LoadingSpinner />;
