@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { UserContext } from "../../contexts/user.context";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
@@ -23,24 +23,24 @@ export const Header = () => {
     }
   };
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await fetch(`https://blogappbackend-cmom.onrender.com/user/auth`, {
-          credentials: "include",
-          method: "GET",
-        });
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     try {
+  //       const response = await fetch(`https://blogappbackend-cmom.onrender.com/user/auth`, {
+  //         credentials: "include",
+  //         method: "GET",
+  //       });
 
-        if (!response.ok) {
-          navigate("/login");
-        }
-      } catch (error) {
-        console.log(error);
-        navigate("/login");
-      }
-    };
-    checkAuth();
-  }, [navigate]);
+  //       if (!response.ok) {
+  //         navigate("/login");
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //       navigate("/login");
+  //     }
+  //   };
+  //   checkAuth();
+  // }, [navigate]);
 
   return (
     <div>
