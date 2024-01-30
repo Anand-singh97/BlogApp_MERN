@@ -21,7 +21,6 @@ export const UserProvider = ({children})=>{
           }
         } catch (error) {
           console.error('Error parsing user data:', error);
-          // Handle the error, maybe clear localStorage or take appropriate action
         }
       }, []);
     const value = {currentUser, setCurrentUser};
