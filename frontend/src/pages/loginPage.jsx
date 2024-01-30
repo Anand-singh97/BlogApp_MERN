@@ -67,6 +67,7 @@ const LoginPage = () => {
         const obj = await response.json();
         if (response.ok) {
           const { username, id } = obj;
+          localStorage.setItem('user-data', JSON.stringify({username, userId: id}));
           setCurrentUser({ username, userId: id });
           navigate('/');
         } else {

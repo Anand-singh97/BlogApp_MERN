@@ -19,7 +19,6 @@ export const IndexPage = () => {
         if (response.ok) {
           const obj = await response.json();
           const { result } = obj;
-          localStorage.setItem('user-data', result);
           setAllPosts(result);
         }
       } catch (error) {}

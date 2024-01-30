@@ -12,7 +12,8 @@ export const UserProvider = ({children})=>{
     useEffect(()=>{
         if(localStorage.getItem('user-data'))
         {
-            setCurrentUser(localStorage.getItem('user-data'));
+            const data = JSON.parse(localStorage.getItem('user-data'))
+            setCurrentUser(data);
         }
     }, [])
     const value = {currentUser, setCurrentUser};
