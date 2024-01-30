@@ -35,7 +35,7 @@ export const PostDetails = () => {
     getPostData();
   }, [id, currentUser, navigate]);
 
-  if (!postData) {
+  if (!postData || !currentUser) {
     return (
       <div className="flex h-screen items-center justify-center">
         <Audio
