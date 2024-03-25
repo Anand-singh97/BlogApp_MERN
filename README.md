@@ -5,8 +5,6 @@
 This project is a full-stack Blog Application developed using the MERN (MongoDB, Express.js, React.js, Node.js) stack. It includes user authentication functionalities with Passport.js for Google sign-in and secure JWT token storage in cookies. Middleware has been implemented for user verification, checking token expiry, and encryption.
 
 ### Features
-
-- User authentication with Google sign-in
 - Secure storage of JWT tokens in cookies
 - Middleware for token verification
 - User registration and login
